@@ -12,16 +12,9 @@ def main():
     with open(FILENAME, 'r') as tortoise:
         program = tortoise.readlines()
         
-    # Create a list of lists where each line of commands
-    # from the program are in a list. Strip the new lines
-    # to exclude them as elements in these lists. 
-    # If the command has two parts, the second element of the list
-    # becomes and empty string due to the space in the command.
-    # Remove the second element. 
+    # Create a list of lists where each line of commands from the program are
+    # in a list. Strip the new lines to exclude them as elements in these lists. 
     program = [list(i.strip()) for i in program]
-    for i in program:
-        if len(i) > 1:
-            i.pop(1)
     tortoise_interpreter.main_tortoise(program)
 
 if __name__ == '__main__':
