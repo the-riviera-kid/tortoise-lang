@@ -1,3 +1,5 @@
+import pytest
+
 from tortoise_interpreter import (
     sanitize_program,
     navigate_command_functions,
@@ -5,29 +7,24 @@ from tortoise_interpreter import (
     )
 
 
-def test_sanatize_program_tiny_tortoise():
-    sanitized_program = sanitize_program([['P', ' ', '3'], ['U'], ['D']])
-    assert sanitized_program == [['P', '3'], ['U'], ['D']]
-
-
-def test_sanatize_program_medium_tortoise():
-    sanitized_program = sanitize_program([['P', ' ', '3'], ['U'], ['D'], ['P', ' ', '3'], ['U'], ['D']])
-    assert sanitized_program == [['P', '3'], ['U'], ['D'], ['P', '3'], ['U'], ['D']]
-
-
-def test_sanatize_program_example_tortoise():
-    sanitized_program = sanitize_program(
-        [
-            ['P', ' ', '2', ' ', ' ', '#', ' ', 's', 'e', 'l', 'e', 'c', 't', ' ', 'p', 'e', 'n', ' ', '2'],
-            ['D', ' ', ' ', ' ', ' ', '#', ' ', 'p', 'e', 'n', ' ', 'd', 'o', 'w', 'n'],
-            ['W', ' ', '2', ' ', ' ', '#', ' ', 'd', 'r', 'a', 'w', ' ', 'w', 'e', 's', 't', ' ', '2', 'c', 'm'],
-            ['N', ' ', '1', ' ', ' ', '#', ' ', 't', 'h', 'e', 'n', ' ', 'n', 'o', 'r', 't', 'h', ' ', '1'],
-            ['E', ' ', '2', ' ', ' ', '#', ' ', 't', 'h', 'e', 'n', ' ', 'e', 'a', 's', 't', ' ', '2'],
-            ['S', ' ', '1', ' ', ' ', '#', ' ', 't', 'h', 'e', 'n', ' ', 'b', 'a', 'c', 'k', ' ', 's', 'o', 'u', 't', 'h'],
-            ['U', ' ', ' ', ' ', ' ', '#', ' ', 'p', 'e', 'n', ' ', 'u', 'p']
-        ]
-    )
-    assert sanitized_program == [['P', '2'], ['D'], ['W', '2'], ['N', '1'], ['E', '2'], ['S', '1'], ['U']]
+@pytest.mark.parametrize('program,                         expected', [
+    (['P 3', 'U', 'D'],                                    [['P', '3'], ['U'], ['D']]),
+    (['P 3', 'U', 'D', 'P 3', 'U', 'D'],                   [['P', '3'], ['U'], ['D'], ['P', '3'], ['U'], ['D']]),
+    ([ 'P 3', 'U', 'D', 'P 3', 'U', 'D', 'P 3', 'U', 'D'], [['P', '3'], ['U'], ['D'], ['P', '3'], ['U'], ['D'], ['P', '3'], ['U'], ['D']]),
+    ([
+        'P 2  # select pen 2',
+        'D    # pen down',
+        'W 2  # draw west 2cm',
+        'N 1  # then north 1',
+        'E 2  # then east 2',
+        'S 1  # then back south',
+        'U    # pen up'
+    ],                                                     [['P', '2'], ['D'], ['W', '2'], ['N', '1'], ['E', '2'], ['S', '1'], ['U']]),
+])
+def test_sanitized_programs(program, expected):
+    program = [list(i.strip()) for i in program]
+    sanitized_program = sanitize_program(program)
+    assert sanitized_program == expected
 
 
 def test_navigate_command_functions():
