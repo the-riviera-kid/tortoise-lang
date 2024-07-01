@@ -18,6 +18,7 @@ def sanitize_program(program):
                 del command[command.index(' '):]
     return program
 
+
 def navigate_command_functions(COMMANDS, program):
     return [f'{i}. {COMMANDS[command[0]](command)}' for i, command in enumerate(program, 1)]
 
