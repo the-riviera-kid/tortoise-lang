@@ -26,7 +26,15 @@ def test_main_tortoise():
 
     main_tortoise(program, print_function)
 
-    assert list_of_strings == ['1. P 2', '2. PEN DOWN', '3. W 2', '4. N 1', '5. E 2', '6. S 1', '7. PEN UP']
+    assert list_of_strings == [
+        '1. P 2',
+        '2. PEN DOWN',
+        '3. Move 2 units to the west.',
+        '4. Move 1 unit north.',
+        '5. Move 2 units to the east.',
+        '6. Move 1 unit south.',
+        '7. PEN UP'
+    ]
 
 
 @pytest.mark.parametrize('program,                         expected', [

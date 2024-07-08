@@ -36,16 +36,20 @@ def pen_colour(command):
 
 
 def move_north(command):
-    return f'N {command[1]}'
+    return f"Move {command[1]} {determine_if_plural(command)} north."
 
 
 def move_south(command):
-    return f'S {command[1]}'
+    return f"Move {command[1]} {determine_if_plural(command)} south."
 
 
 def move_east(command):
-    return f'E {command[1]}'
+    return f"Move {command[1]} {determine_if_plural(command)} to the east."
 
 
 def move_west(command):
-    return f'W {command[1]}'
+    return f"Move {command[1]} {determine_if_plural(command)} to the west."
+
+
+def determine_if_plural(command):
+    return f'units' if int(command[1]) > 1 else 'unit'
