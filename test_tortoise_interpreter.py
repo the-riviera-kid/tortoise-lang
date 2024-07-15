@@ -30,9 +30,9 @@ def test_main_tortoise():
         '1. P 2',
         '2. PEN DOWN',
         '3. Move 2 units to the west.',
-        '4. Move 1 unit north.',
+        '4. Move 1 unit to the north.',
         '5. Move 2 units to the east.',
-        '6. Move 1 unit south.',
+        '6. Move 1 unit to the south.',
         '7. PEN UP'
     ]
 

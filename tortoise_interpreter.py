@@ -20,6 +20,7 @@ def sanitize_program(program):
 
 
 def navigate_command_functions(COMMANDS, program):
+    # Comment
     return [f'{i}. {COMMANDS[command[0]](command)}' for i, command in enumerate(program, 1)]
 
 
@@ -36,20 +37,24 @@ def pen_colour(command):
 
 
 def move_north(command):
-    return f"Move {command[1]} {determine_if_plural(command)} north."
+    return format_direction_and_units(command, "north")
 
 
 def move_south(command):
-    return f"Move {command[1]} {determine_if_plural(command)} south."
+    return format_direction_and_units(command, "south")
 
 
 def move_east(command):
-    return f"Move {command[1]} {determine_if_plural(command)} to the east."
+    return format_direction_and_units(command, "east")
 
 
 def move_west(command):
-    return f"Move {command[1]} {determine_if_plural(command)} to the west."
+    return format_direction_and_units(command, "west")
 
 
-def determine_if_plural(command):
+def format_string_for_singular_or_plural(command):
     return f'units' if int(command[1]) > 1 else 'unit'
+
+
+def format_direction_and_units(command, direction):
+    return f"Move {command[1]} {format_string_for_singular_or_plural(command)} to the {direction}."
