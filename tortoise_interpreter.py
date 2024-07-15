@@ -1,6 +1,14 @@
 def main_tortoise(program, print_to_screen=print):
     program = sanitize_program(program)
-    COMMANDS = {'U': pen_up, 'D': pen_down, 'P': pen_colour, 'N': move_north, 'S': move_south, 'E': move_east, 'W': move_west}
+    COMMANDS = {
+        "U": pen_up,
+        "D": pen_down,
+        "P": pen_colour,
+        "N": move_north,
+        "S": move_south,
+        "E": move_east,
+        "W": move_west,
+    }
     command_to_parse = navigate_command_functions(COMMANDS, program)
 
     for command in command_to_parse:
@@ -15,25 +23,26 @@ def sanitize_program(program):
         if len(command) > 1:
             command.pop(1)
             if len(command) > 2:
-                del command[command.index(' '):]
+                del command[command.index(" ") :]
     return program
 
 
 def navigate_command_functions(COMMANDS, program):
-    # Comment
-    return [f'{i}. {COMMANDS[command[0]](command)}' for i, command in enumerate(program, 1)]
+    return [
+        f"{i}. {COMMANDS[command[0]](command)}" for i, command in enumerate(program, 1)
+    ]
 
 
 def pen_up(command):
-    return f'PEN UP'
+    return f"PEN UP"
 
 
 def pen_down(command):
-    return f'PEN DOWN'
+    return f"PEN DOWN"
 
 
 def pen_colour(command):
-    return f'P {command[1]}'
+    return f"P {command[1]}"
 
 
 def move_north(command):
