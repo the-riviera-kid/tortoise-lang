@@ -36,6 +36,7 @@ def pen_up(command, pen_state):
 def pen_down(command, pen_state):
     return f'PEN DOWN'
 
+
 def get_pen_state(command):
         if command[0] == 'D':
             return 'DOWN'
@@ -68,6 +69,5 @@ def format_string_for_singular_or_plural(command):
 
 
 def format_direction_and_units(command, pen_state, direction):
-    if pen_state == 'DOWN':
-        return f"Draw a line {command[1]} {format_string_for_singular_or_plural(command)} to the {direction}."
-    return f"Move {command[1]} {format_string_for_singular_or_plural(command)} to the {direction}."
+    action = 'Move' if pen_state == 'UP' else 'Draw a line'
+    return f"{action} {command[1]} {format_string_for_singular_or_plural(command)} to the {direction}."
