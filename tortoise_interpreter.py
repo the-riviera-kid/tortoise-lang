@@ -20,41 +20,53 @@ def sanitize_program(program):
 
 
 def navigate_command_functions(COMMANDS, program):
-    # Comment
-    return [f'{i}. {COMMANDS[command[0]](command)}' for i, command in enumerate(program, 1)]
+    command_to_parse = []
+    for i, command in enumerate(program, 1):
+        if command[0] in ['U', 'D']:
+            pen_state = get_pen_state(command)
+        command_to_parse.append(f'{i}. {COMMANDS[command[0]](command, pen_state)}')
+    return command_to_parse
 
 
-def pen_up(command):
+def pen_up(command, pen_state):
     return f'PEN UP'
 
 
-def pen_down(command):
+def pen_down(command, pen_state):
     return f'PEN DOWN'
 
+def get_pen_state(command):
+        if command[0] == 'D':
+            return 'DOWN'
+        if command[0] == 'U':
+            return 'UP'
 
+        
 def pen_colour(command):
     return f'P {command[1]}'
 
 
-def move_north(command):
-    return format_direction_and_units(command, "north")
+def move_north(command, pen_state):
+    return format_direction_and_units(command, pen_state, "north")
 
 
-def move_south(command):
-    return format_direction_and_units(command, "south")
+def move_south(command, pen_state):
+    return format_direction_and_units(command, pen_state, "south")
 
 
-def move_east(command):
-    return format_direction_and_units(command, "east")
+def move_east(command, pen_state):
+    return format_direction_and_units(command, pen_state, "east")
 
 
-def move_west(command):
-    return format_direction_and_units(command, "west")
+def move_west(command, pen_state):
+    return format_direction_and_units(command, pen_state, "west")
 
 
 def format_string_for_singular_or_plural(command):
     return f'units' if int(command[1]) > 1 else 'unit'
 
 
-def format_direction_and_units(command, direction):
+def format_direction_and_units(command, pen_state, direction):
+    if pen_state == 'DOWN':
+        return f"Draw a line {command[1]} {format_string_for_singular_or_plural(command)} to the {direction}."
     return f"Move {command[1]} {format_string_for_singular_or_plural(command)} to the {direction}."

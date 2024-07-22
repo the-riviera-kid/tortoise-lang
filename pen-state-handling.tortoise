@@ -1,0 +1,4 @@
+D    # PEN DOWN
+W 3  # Draw a line 3 units to the west
+U    # PEN UP
+W 3  # Move 3 units to the west
