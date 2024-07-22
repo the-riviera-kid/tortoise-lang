@@ -14,9 +14,11 @@ def test_main_tortoise():
         'D    # pen down',
         'W 2  # draw west 2cm',
         'N 1  # then north 1',
-        'E 2  # then east 2',
+        'U    # pen up',
+        'E 2  # move east 2',
         'S 1  # then back south',
-        'U    # pen up'
+        'D    # pen down',
+        'N 1  # draw north 1',
     ]
     program = [list(i.strip()) for i in program]
 
@@ -29,11 +31,13 @@ def test_main_tortoise():
     assert list_of_strings == [
         '1. P 2',
         '2. PEN DOWN',
-        '3. Move 2 units to the west.',
-        '4. Move 1 unit to the north.',
-        '5. Move 2 units to the east.',
-        '6. Move 1 unit to the south.',
-        '7. PEN UP'
+        '3. Draw a line 2 units to the west.',
+        '4. Draw a line 1 unit to the north.',
+        '5. PEN UP',
+        '6. Move 2 units to the east.',
+        '7. Move 1 unit to the south.',
+        '8. PEN DOWN',
+        '9. Draw a line 1 unit to the north.'
     ]
 
 
@@ -58,10 +62,10 @@ def test_sanitized_programs(program, expected):
 
 
 def test_navigate_command_functions():
-    def pen_up(command):
+    def pen_up(command, pen_state):
         return f'PEN UP'
     
-    def pen_colour(command):
+    def pen_colour(command, state):
         return f'P {command[1]}'
 
     COMMANDS = {'U': pen_up, 'P': pen_colour}
@@ -72,8 +76,8 @@ def test_navigate_command_functions():
 
 
 def test_pen_up():
-    assert pen_up(['U']) == 'PEN UP'
+    assert pen_up(['U'], 'UP') == 'PEN UP'
 
 
 def test_pen_colour():
-    assert pen_colour(['P', '2']) == 'P 2'
+    assert pen_colour(['P', '2'], 'UP') == 'P 2'

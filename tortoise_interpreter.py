@@ -21,6 +21,7 @@ def sanitize_program(program):
 
 def navigate_command_functions(COMMANDS, program):
     command_to_parse = []
+    pen_state = ''
     for i, command in enumerate(program, 1):
         if command[0] in ['U', 'D']:
             pen_state = get_pen_state(command)
@@ -42,7 +43,7 @@ def get_pen_state(command):
             return 'UP'
 
         
-def pen_colour(command):
+def pen_colour(command, pen_state):
     return f'P {command[1]}'
 
 
