@@ -1,7 +1,13 @@
 P 2  # select pen 2
 D    # pen down
-W 2  # draw west 2cm
+D
+W 2  # draw west 2 cm
 N 1  # then north 1
+U    # pen up
+U
+W 2  # move west 2 cm
 E 2  # then east 2
-S 1  # then back south
+D    # pen down
+W 2  # draw west 2 cm
+N 1  # then north 1
 U    # pen up
