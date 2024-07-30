@@ -20,10 +20,12 @@ def main_tortoise(program, print_to_screen=print):
 
 
 def sanitize_program(program):
-    """Get tortoise program ready for interpretation."""
-    # If a command has two parts, the second element of the list will be an empty string.
-    # Remove this element. Then remove all elements after the first empty string in each list.
-    # These were the comments at the end of each command.
+    """Get tortoise program ready for interpretation.
+
+    There are unnecessary characters like spaces and comments which we want to get rid of.
+    If a command has two parts, the second element of the list will be an empty string.
+    Remove this element. Then remove all elements after the first empty string in each list.
+    These were the comments at the end of each command."""
     for command in program:
         if len(command) > 1:
             command.pop(1)
@@ -33,7 +35,9 @@ def sanitize_program(program):
 
 
 def navigate_command_functions(commands, program):
-    """Number each command of the tortoise program and call the
+    """For each command, call the corresponding function.
+
+    Number each command of the tortoise program and call the
     correct function for each command to be interpreted."""
     return [
         f"{i}. {commands[command[0]](command)}" for i, command in enumerate(program, 1)

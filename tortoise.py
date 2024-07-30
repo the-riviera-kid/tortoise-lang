@@ -5,7 +5,7 @@ import tortoise_interpreter
 
 
 def main():
-    """Read into a tortoise program to be interpreted."""
+    """Read in a tortoise program to be interpreted."""
     try:
         filename = sys.argv[1]
     except IndexError:

@@ -1,3 +1,6 @@
+# pylint: disable=missing-module-docstring
+# pylint: disable=missing-function-docstring
+
 import pytest
 
 from tortoise_interpreter import (
@@ -39,42 +42,24 @@ def test_main_tortoise():
     ]
 
 
-@pytest.mark.parametrize(
-    "program,                         expected",
-    [
-        (["P 3", "U", "D"], [["P", "3"], ["U"], ["D"]]),
-        (
-            ["P 3", "U", "D", "P 3", "U", "D"],
-            [["P", "3"], ["U"], ["D"], ["P", "3"], ["U"], ["D"]],
-        ),
-        (
-            ["P 3", "U", "D", "P 3", "U", "D", "P 3", "U", "D"],
-            [
-                ["P", "3"],
-                ["U"],
-                ["D"],
-                ["P", "3"],
-                ["U"],
-                ["D"],
-                ["P", "3"],
-                ["U"],
-                ["D"],
-            ],
-        ),
-        (
-            [
-                "P 2  # select pen 2",
-                "D    # pen down",
-                "W 2  # draw west 2cm",
-                "N 1  # then north 1",
-                "E 2  # then east 2",
-                "S 1  # then back south",
-                "U    # pen up",
-            ],
-            [["P", "2"], ["D"], ["W", "2"], ["N", "1"], ["E", "2"], ["S", "1"], ["U"]],
-        ),
-    ],
-)
+# fmt: off
+@pytest.mark.parametrize('program,                         expected', [
+    (['P 3', 'U', 'D'],                                   [['P', '3'], ['U'], ['D']]),
+    # pylint: disable=line-too-long
+    (['P 3', 'U', 'D', 'P 3', 'U', 'D'],                  [['P', '3'], ['U'], ['D'], ['P', '3'], ['U'], ['D']]),
+    (['P 3', 'U', 'D', 'P 3', 'U', 'D', 'P 3', 'U', 'D'], [['P', '3'], ['U'], ['D'], ['P', '3'], ['U'], ['D'], ['P', '3'], ['U'], ['D']]),
+    ([
+        'P 2  # select pen 2',
+        'D    # pen down',
+        'W 2  # draw west 2cm',
+        'N 1  # then north 1',
+        'E 2  # then east 2',
+        'S 1  # then back south',
+        'U    # pen up'
+    ],                                                    [['P', '2'], ['D'], ['W', '2'], ['N', '1'], ['E', '2'], ['S', '1'], ['U']]),
+    # pylint: enable=line-too-long
+])
+# fmt: on
 def test_sanitized_programs(program, expected):
     program = [list(i.strip()) for i in program]
     sanitized_program = sanitize_program(program)
@@ -82,15 +67,15 @@ def test_sanitized_programs(program, expected):
 
 
 def test_navigate_command_functions():
-    def pen_up(command):
-        return f"PEN UP"
+    def fake_pen_up(_):
+        return "PEN UP"
 
-    def pen_colour(command):
+    def fake_pen_colour(command):
         return f"P {command[1]}"
 
-    COMMANDS = {"U": pen_up, "P": pen_colour}
+    commands = {"U": fake_pen_up, "P": fake_pen_colour}
     program = [["P", "3"], ["U"]]
-    command_to_parse = navigate_command_functions(COMMANDS, program)
+    command_to_parse = navigate_command_functions(commands, program)
 
     assert command_to_parse == ["1. P 3", "2. PEN UP"]
 
