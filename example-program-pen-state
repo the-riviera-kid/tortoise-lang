@@ -1,11 +1,11 @@
 P 2  # select pen 2
 D    # pen down
 W 2  # draw west 2 cm
-N 1  # then north 1
 U    # pen up
 W 2  # move west 2 cm
-E 2  # then east 2
 D    # pen down
+D    # pen down (ignored)
 W 2  # draw west 2 cm
 N 1  # then north 1
 U    # pen up
+U    # pen up (ignored)
