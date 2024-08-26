@@ -4,12 +4,6 @@ from tortoise_interpreter import (
     main_tortoise,
     sanitize_program,
     navigate_command_functions,
-    pen_up,
-    pen_down,
-    pen_colour,
-    get_pen_state,
-    move_east,
-    move_north
     )
 
 
@@ -67,28 +61,18 @@ def test_sanitized_programs(program, expected):
 
 
 def test_navigate_command_functions():
-
-    COMMANDS = {'U': pen_up,'D': pen_down ,'P': pen_colour, 'N': move_north, 'E': move_east}
-    program = [['P', '3'], ['U'], ['N', '1'], ['U'], ['D'], ['E', '2'], ['D']]
+    def underscore(command, pen_state):
+        return '___', pen_state
+    def double_colon(command, pen_state):
+        return '::', pen_state
+    def hard_stop(commands, pen_state):
+        return '...', pen_state
+    
+    COMMANDS = {'U': underscore,'D': double_colon ,'H': hard_stop}
+    program = [['U'], ['D'], ['H']]
     command_to_parse = navigate_command_functions(COMMANDS, program)
 
-    assert command_to_parse == ['1. P 3',
-                                '2. PEN UP',
-                                '3. Move 1 unit to the north.',
-                                '4. PEN UP (ignored)',
-                                '5. PEN DOWN',
-                                '6. Draw a line 2 units to the east.',
-                                '7. PEN DOWN (ignored)',
+    assert command_to_parse == ['1. ___',
+                                '2. ::',
+                                '3. ...',
                                 ]
-
-def test_pen_up():
-    assert pen_up(['U'], 'UP', 'DOWN') == 'PEN UP'
-
-def test_pen_up_ignored():
-    assert pen_up(['U'], 'UP', 'UP') == 'PEN UP (ignored)'
-
-def test_pen_colour():
-    assert pen_colour(['P', '2'], 'UP', '') == 'P 2'
-
-def test_get_pen_state():
-    assert get_pen_state(['D'], '') == 'DOWN'

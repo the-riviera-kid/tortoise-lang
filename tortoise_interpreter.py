@@ -21,7 +21,7 @@ def sanitize_program(program):
 
 def navigate_command_functions(COMMANDS, program):
     command_to_parse = []
-    pen_state = ''
+    pen_state = 'UP'
     for i, command in enumerate(program, 1):
         result = COMMANDS[command[0]](command, pen_state)
         if isinstance(result, tuple):
@@ -31,17 +31,13 @@ def navigate_command_functions(COMMANDS, program):
     return command_to_parse
 
 def pen_up(command, pen_state):
-    if pen_state == "DOWN" or pen_state == '':
-        pen_state = "UP"
-        return f'PEN UP', pen_state
-    return f'PEN UP (ignored)', pen_state
-
+    ignored = ' (ignored)' if pen_state == "UP" else ''
+    return f'PEN UP{ignored}', "UP"
+ 
 
 def pen_down(command, pen_state):
-    if pen_state == "UP" or pen_state == '':
-        pen_state = "DOWN"
-        return f'PEN DOWN', pen_state
-    return f'PEN DOWN (ignored)', pen_state
+    ignored = ' (ignored)' if pen_state == "DOWN" else ''
+    return f'PEN DOWN{ignored}', "DOWN"
 
         
 def pen_colour(command, pen_state):
