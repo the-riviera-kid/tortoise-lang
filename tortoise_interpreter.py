@@ -21,49 +21,49 @@ def sanitize_program(program):
 
 def navigate_command_functions(COMMANDS, program):
     command_to_parse = []
-    pen_state = 'UP'
+    draw = False
     for i, command in enumerate(program, 1):
-        result = COMMANDS[command[0]](command, pen_state)
+        result = COMMANDS[command[0]](command, draw)
         if isinstance(result, tuple):
-            pen_state = result[1]
+            draw = result[1]
             result = result[0]
         command_to_parse.append(f'{i}. {result}')
     return command_to_parse
 
-def pen_up(command, pen_state):
-    ignored = ' (ignored)' if pen_state == "UP" else ''
-    return f'PEN UP{ignored}', "UP"
+def pen_up(command, draw):
+    ignored = ' (ignored)' if not draw else ''
+    return f'PEN UP{ignored}', False
  
 
-def pen_down(command, pen_state):
-    ignored = ' (ignored)' if pen_state == "DOWN" else ''
-    return f'PEN DOWN{ignored}', "DOWN"
+def pen_down(command, draw):
+    ignored = ' (ignored)' if draw  else ''
+    return f'PEN DOWN{ignored}', True
 
         
-def pen_colour(command, pen_state):
+def pen_colour(command, draw):
     return f'P {command[1]}'
 
 
-def move_north(command, pen_state):
-    return format_direction_and_units(command, pen_state, "north")
+def move_north(command, draw):
+    return format_direction_and_units(command, draw, "north")
 
 
-def move_south(command, pen_state):
-    return format_direction_and_units(command, pen_state, "south")
+def move_south(command, draw):
+    return format_direction_and_units(command, draw, "south")
 
 
-def move_east(command, pen_state):
-    return format_direction_and_units(command, pen_state, "east")
+def move_east(command, draw):
+    return format_direction_and_units(command, draw, "east")
 
 
-def move_west(command, pen_state):
-    return format_direction_and_units(command, pen_state, "west")
+def move_west(command, draw):
+    return format_direction_and_units(command, draw, "west")
 
 
 def format_string_for_singular_or_plural(command):
     return f'units' if int(command[1]) > 1 else 'unit'
 
 
-def format_direction_and_units(command, pen_state, direction):
-    action = 'Move' if pen_state == 'UP' else 'Draw a line'
+def format_direction_and_units(command, draw, direction):
+    action = 'Move' if draw == False else 'Draw a line'
     return f"{action} {command[1]} {format_string_for_singular_or_plural(command)} to the {direction}."
