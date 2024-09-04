@@ -62,7 +62,6 @@ def test_sanitized_programs(program, expected):
 
 def test_navigate_command_functions():
     def underscore(command, pen_state):
-        pen_state = "UP"
         return ('___', pen_state), pen_state
     def double_colon(command, pen_state):
         return '::', pen_state
@@ -74,7 +73,7 @@ def test_navigate_command_functions():
     program = [['U'], ['D'], ['H', '4']]
     command_to_parse = navigate_command_functions(COMMANDS, program)
 
-    assert command_to_parse == ["1. ('___', 'UP')",
+    assert command_to_parse == ["1. ('___', False)",
                                 '2. ::',
                                 '3. ....',
                                 ]
