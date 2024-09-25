@@ -73,7 +73,7 @@ def test_navigate_command_functions():
     program = [['U'], ['D'], ['H', '4']]
     command_to_parse = navigate_command_functions(COMMANDS, program)
 
-    assert command_to_parse == ["1. ('___', False)",
+    assert command_to_parse == ["1. ('___', 'Move')",
                                 '2. ::',
                                 '3. ....',
                                 ]

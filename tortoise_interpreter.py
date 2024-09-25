@@ -1,3 +1,6 @@
+MOVE = 'Move'
+DRAW = 'Draw a line'
+
 def main_tortoise(program, print_to_screen=print):
     program = sanitize_program(program)
     COMMANDS = {'U': pen_up, 'D': pen_down, 'P': pen_colour, 'N': move_north, 'S': move_south, 'E': move_east, 'W': move_west}
@@ -21,49 +24,48 @@ def sanitize_program(program):
 
 def navigate_command_functions(COMMANDS, program):
     command_to_parse = []
-    draw = False
+    pen_state = MOVE
     for i, command in enumerate(program, 1):
-        result = COMMANDS[command[0]](command, draw)
+        result = COMMANDS[command[0]](command, pen_state)
         if isinstance(result, tuple):
-            draw = result[1]
+            pen_state = result[1]
             result = result[0]
         command_to_parse.append(f'{i}. {result}')
     return command_to_parse
 
-def pen_up(command, draw):
-    ignored = ' (ignored)' if not draw else ''
-    return f'PEN UP{ignored}', False
+def pen_up(command, pen_state):
+    ignored = ' (ignored)' if pen_state == MOVE else ''
+    return f'PEN UP{ignored}', MOVE
  
 
-def pen_down(command, draw):
-    ignored = ' (ignored)' if draw  else ''
-    return f'PEN DOWN{ignored}', True
+def pen_down(command, pen_state):
+    ignored = ' (ignored)' if pen_state == DRAW  else ''
+    return f'PEN DOWN{ignored}', DRAW
 
         
-def pen_colour(command, draw):
+def pen_colour(command, pen_state):
     return f'P {command[1]}'
 
 
-def move_north(command, draw):
-    return format_direction_and_units(command, draw, "north")
+def move_north(command, pen_state):
+    return format_direction_and_units(command, pen_state, "north")
 
 
-def move_south(command, draw):
-    return format_direction_and_units(command, draw, "south")
+def move_south(command, pen_state):
+    return format_direction_and_units(command, pen_state, "south")
 
 
-def move_east(command, draw):
-    return format_direction_and_units(command, draw, "east")
+def move_east(command, pen_state):
+    return format_direction_and_units(command, pen_state, "east")
 
 
-def move_west(command, draw):
-    return format_direction_and_units(command, draw, "west")
+def move_west(command, pen_state):
+    return format_direction_and_units(command, pen_state, "west")
 
 
 def format_string_for_singular_or_plural(command):
     return f'units' if int(command[1]) > 1 else 'unit'
 
 
-def format_direction_and_units(command, draw, direction):
-    action = 'Move' if draw == False else 'Draw a line'
-    return f"{action} {command[1]} {format_string_for_singular_or_plural(command)} to the {direction}."
+def format_direction_and_units(command, pen_state, direction):
+    return f"{pen_state} {command[1]} {format_string_for_singular_or_plural(command)} to the {direction}."
