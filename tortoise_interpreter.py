@@ -1,8 +1,7 @@
 """Implementation of tortoise-language."""
 
-
-MOVE = 'Move'
-DRAW = 'Draw a line'
+MOVE = "Move"
+DRAW = "Draw a line"
 
 
 def main_tortoise(program, print_to_screen=print):
@@ -38,7 +37,7 @@ def sanitize_program(program):
     return program
 
 
-def navigate_command_functions(COMMANDS, program):
+def navigate_command_functions(commands, program):
     """For each command, call the corresponding function.
 
     Number each command of the tortoise program and call the
@@ -46,29 +45,29 @@ def navigate_command_functions(COMMANDS, program):
     command_to_parse = []
     pen_state = MOVE
     for i, command in enumerate(program, 1):
-        result = COMMANDS[command[0]](command, pen_state)
+        result = commands[command[0]](command, pen_state)
         if isinstance(result, tuple):
             pen_state = result[1]
             result = result[0]
-        command_to_parse.append(f'{i}. {result}')
+        command_to_parse.append(f"{i}. {result}")
     return command_to_parse
 
-  
-def pen_up(command, pen_state):
+
+def pen_up(_, pen_state):
     """Interprets the 'pen up' command."""
-    ignored = ' (ignored)' if pen_state == MOVE else ''
-    return f'PEN UP{ignored}', MOVE
- 
+    ignored = " (ignored)" if pen_state == MOVE else ""
+    return f"PEN UP{ignored}", MOVE
 
-def pen_down(command, pen_state):
+
+def pen_down(_, pen_state):
     """Interprets the 'pen down' command."""
-    ignored = ' (ignored)' if pen_state == DRAW  else ''
-    return f'PEN DOWN{ignored}', DRAW
+    ignored = " (ignored)" if pen_state == DRAW else ""
+    return f"PEN DOWN{ignored}", DRAW
 
-        
-def pen_colour(command, pen_state):
+
+def pen_colour(command, _):
     """Selects a pen colour."""
-    return f'P {command[1]}'
+    return f"P {command[1]}"
 
 
 def move_north(command, pen_state):
@@ -90,12 +89,13 @@ def move_west(command, pen_state):
     """Moves the pen west a certain distance in centimetres."""
     return format_direction_and_units(command, pen_state, "west")
 
-  
+
 def format_string_for_singular_or_plural(command):
     """Depending on the distance in the command, we use either 'unit' or 'units'."""
-    return 'units' if int(command[1]) > 1 else 'unit'
+    return "units" if int(command[1]) > 1 else "unit"
 
-  
+
 def format_direction_and_units(command, pen_state, direction):
     """Returns the final, completed sentence."""
-    return f"{pen_state} {command[1]} {format_string_for_singular_or_plural(command)} to the {direction}."
+    pluralized = format_string_for_singular_or_plural(command)
+    return f"{pen_state} {command[1]} {pluralized} to the {direction}."
