@@ -1,6 +1,10 @@
 """Implementation of tortoise-language."""
 
 
+MOVE = 'Move'
+DRAW = 'Draw a line'
+
+
 def main_tortoise(program, print_to_screen=print):
     """Main function that interprets a tortoise program."""
     program = sanitize_program(program)
@@ -34,58 +38,64 @@ def sanitize_program(program):
     return program
 
 
-def navigate_command_functions(commands, program):
+def navigate_command_functions(COMMANDS, program):
     """For each command, call the corresponding function.
 
     Number each command of the tortoise program and call the
     correct function for each command to be interpreted."""
-    return [
-        f"{i}. {commands[command[0]](command)}" for i, command in enumerate(program, 1)
-    ]
+    command_to_parse = []
+    pen_state = MOVE
+    for i, command in enumerate(program, 1):
+        result = COMMANDS[command[0]](command, pen_state)
+        if isinstance(result, tuple):
+            pen_state = result[1]
+            result = result[0]
+        command_to_parse.append(f'{i}. {result}')
+    return command_to_parse
 
-
-# fmt: off
-def pen_up(_):
-# fmt: on
+  
+def pen_up(command, pen_state):
     """Interprets the 'pen up' command."""
-    return "PEN UP"
+    ignored = ' (ignored)' if pen_state == MOVE else ''
+    return f'PEN UP{ignored}', MOVE
+ 
 
-
-def pen_down(_):
+def pen_down(command, pen_state):
     """Interprets the 'pen down' command."""
-    return "PEN DOWN"
+    ignored = ' (ignored)' if pen_state == DRAW  else ''
+    return f'PEN DOWN{ignored}', DRAW
 
-
-def pen_colour(command):
+        
+def pen_colour(command, pen_state):
     """Selects a pen colour."""
-    return f"P {command[1]}"
+    return f'P {command[1]}'
 
 
-def move_north(command):
+def move_north(command, pen_state):
     """Moves the pen north a certain distance in centimetres."""
-    return format_direction_and_units(command, "north")
+    return format_direction_and_units(command, pen_state, "north")
 
 
-def move_south(command):
+def move_south(command, pen_state):
     """Moves the pen south a certain distance in centimetres."""
-    return format_direction_and_units(command, "south")
+    return format_direction_and_units(command, pen_state, "south")
 
 
-def move_east(command):
+def move_east(command, pen_state):
     """Moves the pen east a certain distance in centimetres."""
-    return format_direction_and_units(command, "east")
+    return format_direction_and_units(command, pen_state, "east")
 
 
-def move_west(command):
+def move_west(command, pen_state):
     """Moves the pen west a certain distance in centimetres."""
-    return format_direction_and_units(command, "west")
+    return format_direction_and_units(command, pen_state, "west")
 
-
+  
 def format_string_for_singular_or_plural(command):
     """Depending on the distance in the command, we use either 'unit' or 'units'."""
     return 'units' if int(command[1]) > 1 else 'unit'
 
-
-def format_direction_and_units(command, direction):
+  
+def format_direction_and_units(command, pen_state, direction):
     """Returns the final, completed sentence."""
-    return f"Move {command[1]} {format_string_for_singular_or_plural(command)} to the {direction}."
+    return f"{pen_state} {command[1]} {format_string_for_singular_or_plural(command)} to the {direction}."
