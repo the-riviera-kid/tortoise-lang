@@ -1,3 +1,6 @@
+# pylint: disable=missing-module-docstring
+# pylint: disable=missing-function-docstring
+
 import pytest
 
 from tortoise_interpreter import (
@@ -5,6 +8,7 @@ from tortoise_interpreter import (
     sanitize_program,
     navigate_command_functions,
     )
+
 
 
 def test_main_tortoise():
@@ -18,10 +22,12 @@ def test_main_tortoise():
         'S 1  # then back south',
         'D    # pen down',
         'N 1  # draw north 1',
+
     ]
     program = [list(i.strip()) for i in program]
 
     list_of_strings = []
+
     def print_function(stuff_to_print):
         list_of_strings.append(stuff_to_print)
 
@@ -40,10 +46,12 @@ def test_main_tortoise():
     ]
 
 
+# fmt: off
 @pytest.mark.parametrize('program,                         expected', [
-    (['P 3', 'U', 'D'],                                    [['P', '3'], ['U'], ['D']]),
-    (['P 3', 'U', 'D', 'P 3', 'U', 'D'],                   [['P', '3'], ['U'], ['D'], ['P', '3'], ['U'], ['D']]),
-    ([ 'P 3', 'U', 'D', 'P 3', 'U', 'D', 'P 3', 'U', 'D'], [['P', '3'], ['U'], ['D'], ['P', '3'], ['U'], ['D'], ['P', '3'], ['U'], ['D']]),
+    (['P 3', 'U', 'D'],                                   [['P', '3'], ['U'], ['D']]),
+    # pylint: disable=line-too-long
+    (['P 3', 'U', 'D', 'P 3', 'U', 'D'],                  [['P', '3'], ['U'], ['D'], ['P', '3'], ['U'], ['D']]),
+    (['P 3', 'U', 'D', 'P 3', 'U', 'D', 'P 3', 'U', 'D'], [['P', '3'], ['U'], ['D'], ['P', '3'], ['U'], ['D'], ['P', '3'], ['U'], ['D']]),
     ([
         'P 2  # select pen 2',
         'D    # pen down',
@@ -52,8 +60,10 @@ def test_main_tortoise():
         'E 2  # then east 2',
         'S 1  # then back south',
         'U    # pen up'
-    ],                                                     [['P', '2'], ['D'], ['W', '2'], ['N', '1'], ['E', '2'], ['S', '1'], ['U']]),
+    ],                                                    [['P', '2'], ['D'], ['W', '2'], ['N', '1'], ['E', '2'], ['S', '1'], ['U']]),
+    # pylint: enable=line-too-long
 ])
+# fmt: on
 def test_sanitized_programs(program, expected):
     program = [list(i.strip()) for i in program]
     sanitized_program = sanitize_program(program)
