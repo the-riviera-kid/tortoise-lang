@@ -3,7 +3,8 @@ The Tortoise Language (inspired by an exercise in The Pragmatic Programmer)
 
 # Running code analysis tools:
 We have three code analysis tools in tools.bash file, pytest, black, and pylint.
-Every time we change someting in the code these analysis tools should be run.
+Every time we change something in the code these analysis tools should be run.
+
 To run the scripts:
 
 1. create a virtual environment (one time only)
