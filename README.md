@@ -10,7 +10,7 @@ To run the scripts:
 1. create a virtual environment (one time only)  
         virtualenv -p python3 venv
 2. start the virtual environment  
-source venv/bin/activate
+        source venv/bin/activate
 3. install the tools we need (one time only)  
         pip install pytest pylint black
 4. run the script  
