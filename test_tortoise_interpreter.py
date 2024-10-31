@@ -52,7 +52,7 @@ def test_main_tortoise_verbose():
     main_tortoise(program, "shityfilename", True, print_function)
 
     assert list_of_strings == [
-        "\nExecuting shityfilename, 3 commands found\n",
+        "Executing shityfilename, 3 commands found",
         "1. P 2",
         "2. PEN DOWN",
         "3. Draw a line 2 units to the west.",

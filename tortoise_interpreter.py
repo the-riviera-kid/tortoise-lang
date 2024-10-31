@@ -19,7 +19,7 @@ def main_tortoise(program, filename, verbose, print_to_screen=print):
     command_to_parse = navigate_command_functions(commands, program)
 
     if verbose:
-        print_to_screen(f"\nExecuting {filename}, {len(program)} commands found\n")
+        print_to_screen(f"Executing {filename}, {len(program)} commands found")
     for command in command_to_parse:
         print_to_screen(command)
 
