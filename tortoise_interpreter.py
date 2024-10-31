@@ -4,7 +4,7 @@ MOVE = "Move"
 DRAW = "Draw a line"
 
 
-def main_tortoise(program, print_to_screen=print):
+def main_tortoise(program, filename, verbose, print_to_screen=print):
     """Main function that interprets a tortoise program."""
     program = sanitize_program(program)
     commands = {
@@ -18,6 +18,8 @@ def main_tortoise(program, print_to_screen=print):
     }
     command_to_parse = navigate_command_functions(commands, program)
 
+    if verbose:
+        print_to_screen(f"Executing {filename}, {len(program)} commands found")
     for command in command_to_parse:
         print_to_screen(command)
 
