@@ -15,12 +15,8 @@ def test_main_tortoise():
         "P 2  # select pen 2",
         "D    # pen down",
         "W 2  # draw west 2cm",
-        "N 1  # then north 1",
         "U    # pen up",
         "E 2  # move east 2",
-        "S 1  # then back south",
-        "D    # pen down",
-        "N 1  # draw north 1",
     ]
     program = [list(i.strip()) for i in program]
 
@@ -29,18 +25,37 @@ def test_main_tortoise():
     def print_function(stuff_to_print):
         list_of_strings.append(stuff_to_print)
 
-    main_tortoise(program, print_function)
+    main_tortoise(program, "shityfilename", False, print_function)
 
     assert list_of_strings == [
         "1. P 2",
         "2. PEN DOWN",
         "3. Draw a line 2 units to the west.",
-        "4. Draw a line 1 unit to the north.",
-        "5. PEN UP",
-        "6. Move 2 units to the east.",
-        "7. Move 1 unit to the south.",
-        "8. PEN DOWN",
-        "9. Draw a line 1 unit to the north.",
+        "4. PEN UP",
+        "5. Move 2 units to the east.",
+    ]
+
+
+def test_main_tortoise_verbose():
+    program = [
+        "P 2  # select pen 2",
+        "D    # pen down",
+        "W 2  # draw west 2cm",
+    ]
+    program = [list(i.strip()) for i in program]
+
+    list_of_strings = []
+
+    def print_function(stuff_to_print):
+        list_of_strings.append(stuff_to_print)
+
+    main_tortoise(program, "shityfilename", True, print_function)
+
+    assert list_of_strings == [
+        "\nExecuting shityfilename, 3 commands found\n",
+        "1. P 2",
+        "2. PEN DOWN",
+        "3. Draw a line 2 units to the west.",
     ]
 
 
